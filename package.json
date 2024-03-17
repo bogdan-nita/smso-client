@@ -12,8 +12,8 @@
   },
   "author": "Bogdan Nita",
   "repository": {
-    "url": "https://github.com/bogdan-nita/smso-client.git",
-    "type": "git"
+    "type": "git",
+    "url": "git+https://github.com/bogdan-nita/smso-client.git"
   },
   "license": "ISC",
   "devDependencies": {
@@ -21,5 +21,8 @@
     "rimraf": "^5.0.5",
     "typedoc": "^0.25.12",
     "typescript": "^5.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
