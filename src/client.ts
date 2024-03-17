@@ -1,4 +1,5 @@
 // SmsoClient.ts
+import { Optional } from "utility-types";
 import {
   Sender,
   SendMessageRequest,
@@ -9,10 +10,16 @@ import {
 
 export class Client {
   private apiKey: string;
+  private sender?: string;
   private baseUrl: string;
 
-  constructor(apiKey: string, baseUrl: string = "https://app.smso.ro/api/v1") {
+  constructor(
+    apiKey: string,
+    sender?: string,
+    baseUrl: string = "https://app.smso.ro/api/v1"
+  ) {
     this.apiKey = apiKey;
+    this.sender = sender;
     this.baseUrl = baseUrl;
   }
 
@@ -43,7 +50,15 @@ export class Client {
     return this.makeRequest<Sender[]>("/senders");
   }
 
-  public sendMessage(data: SendMessageRequest): Promise<SendMessageResponse> {
+  public sendMessage(
+    data: Optional<SendMessageRequest, "sender">
+  ): Promise<SendMessageResponse> {
+    data.sender ||= this.sender;
+
+    if (!data.sender) {
+      throw new Error("Sender ID is required");
+    }
+
     return this.makeRequest<SendMessageResponse>("/send", "POST", data);
   }
 
